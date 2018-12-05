@@ -1,14 +1,8 @@
-const fs = require('fs');
-const { promisify } = require('util');
-const readFileAsync = promisify(fs.readFile);
+const load = require('./_loadFile');
 
 const sanitizeInput = () =>
-  readFileAsync('./input.txt').then(buff =>
-    buff
-      .toString()
-      .split('\n')
-      .map(n => parseInt(n))
-      .filter(n => !isNaN(n))
+  load('./src/day1.txt').then(arr =>
+    arr.map(n => parseInt(n)).filter(n => !isNaN(n))
   );
 
 const sum = (x, y) => x + y;
