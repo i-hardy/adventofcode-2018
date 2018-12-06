@@ -25,7 +25,7 @@ const filledArray = width => filling => Array(width).fill(filling);
 const createCloth = width => filledArray(width)(filledArray(width)(0));
 
 const partOne = claims => {
-  const cloth = createCloth(1000);
+  let cloth = createCloth(1000);
   claims.forEach(claim => {
     const { offset } = claim;
     const { size } = claim;
@@ -33,14 +33,17 @@ const partOne = claims => {
       x: offset.x + size.w,
       y: offset.y + size.h
     };
-    for (let index = offset.y; index < toFill.y; index++) {
-      cloth[index] = cloth[index].map((inch, index) => {
-        if (index > offset.x && index <= toFill.x) {
-          return inch + 1;
-        }
-        return inch;
-      });
-    }
+    cloth = cloth.map((line, index) => {
+      if (index > offset.y && index <= toFill.y) {
+        return line.map((inch, index) => {
+          if (index > offset.x && index <= toFill.x) {
+            return inch + 1;
+          }
+          return inch;
+        });
+      }
+      return line;
+    });
   });
   return cloth.flat().filter(inch => inch > 1).length;
 };
